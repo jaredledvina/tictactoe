@@ -33,11 +33,13 @@ def print_board():
 def game_step(turn):
     if turn % 2 == 0:
         position = input("Player 1 (X): ")
-        value = "X"
+        player_token = "X"
     else:
         position = input("Player 2 (O): ")
-        value = "O"
-    status[int(position)] = value
+        player_token = "O"
+    status[int(position)] = player_token
+    if winner(player_token):
+        game_done(player_token)
 
 def squares_finished():
     if " " in status:
@@ -45,20 +47,16 @@ def squares_finished():
     else:
         return True
 
-def x_win():
+def winner(player_token):
+    winning_combinations = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]]
+    for entry in winning_combinations:
+        if all(status[each] == player_token for each in entry):
+            return True
     return False
 
-def o_win():
-    return False
-
-def game_done():
-    # if:
-        # Any of these are true:
-        # squares_finished()
-        # Check for adjacency among Xs
-        # Check for adjacency among Os
-        # Return False
-    return True
+def game_done(player_token):
+    print("Congrats", player_token, "you win!")
 
 create_game()
 welcome()
